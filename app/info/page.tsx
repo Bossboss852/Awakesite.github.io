@@ -1,9 +1,8 @@
 import Image from "next/image";
 
-
 export default function Home() {
   return (<>
-  <h1>AwakeSite</h1>
+  <h1>AwakeSite page!!!!!</h1>
   <h2>Instructions</h2>
   <p>sd;fljaskdlfj</p>
   <ul>
