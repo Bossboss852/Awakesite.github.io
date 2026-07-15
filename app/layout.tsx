@@ -1,8 +1,10 @@
-'use client';
-import AwakeButton from './AwakeButton';
-import './globals.css'
-import Navbar from './navbar'
-import { useState } from 'react'
+import './globals.css';
+import Link from 'next/link';
+
+export const metadata = {
+  title: 'AwakeSite',
+  description: 'Keep your computer awake',
+};
 
 export default function RootLayout({
   children,
@@ -12,12 +14,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header className="top-nav">
-          <nav>
-            <Navbar/>
-          </nav>
-        </header>
-        <main>{children}</main>
+        <div className="layout-container">
+          <header className="top-nav">
+            <nav className="nav-links">
+              <Link href="/" className="nav-link">Home</Link>
+              <Link href="/info" className="nav-link">Info</Link>
+            </nav>
+          </header>
+          <main className="main-content">{children}</main>
+        </div>
       </body>
     </html>
   );

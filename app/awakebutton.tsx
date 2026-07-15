@@ -2,12 +2,10 @@
 import { useEffect, useState, useRef} from 'react';
 
 interface AwakeButtonProps {
-  width?: string | number;
-  height?: string | number;
   onStateChange: (isActive: boolean) => void;
 }
 
-export default function AwakeButton({ width, height, onStateChange}: AwakeButtonProps ){
+export default function AwakeButton({ onStateChange }: AwakeButtonProps ){
   const [lock, setLock] = useState<WakeLockSentinel | null>(null);
   const lockRef = useRef<WakeLockSentinel | null>(null);
 
@@ -23,16 +21,16 @@ export default function AwakeButton({ width, height, onStateChange}: AwakeButton
     }
 
     try {
-    const wakeLock = await navigator.wakeLock.request('screen');
+      const wakeLock = await navigator.wakeLock.request('screen');
       wakeLock.addEventListener('release', () => {
         setLock(null);
       });
-    setLock(wakeLock);
-    
+      setLock(wakeLock);
     } catch {
-      alert("Awakelock was rejected, this doesn't work if on low battery, or if not compatible with your browser.");
+      alert("Awakelock was rejected. This doesn't work if on low battery, or if not compatible with your browser.");
     }
   }
+
   // onclick handler
   async function handleAwake(){
     if (lock !== null) {
@@ -42,6 +40,7 @@ export default function AwakeButton({ width, height, onStateChange}: AwakeButton
       await requestLock();
     }
   }
+
   // Handles when the button unmounts
   useEffect(() => {
     lockRef.current = lock;
@@ -53,15 +52,14 @@ export default function AwakeButton({ width, height, onStateChange}: AwakeButton
     };
   }, []);
 
+  const isActive = lock !== null;
 
   return (
     <button 
       onClick={handleAwake} 
-      style={{ width, height }}
-      className="w-full h-full text-white font-bold" 
+      className={`awake-btn ${isActive ? 'on' : 'off'}`}
     >
-      {lock === null ? "AwakeScreen: OFF" : "AwakeScreen: ON"}
+      {isActive ? "ACTIVE" : "INACTIVE"}
     </button>
   );
-
 }
