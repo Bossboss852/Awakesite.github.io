@@ -1,40 +1,100 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AwakeSite (bossboss852.github.io)
 
-## Getting Started
+AwakeSite is a simple web application designed to ensure that your computer does not go to sleep while the page is active. 
 
-First, run the development server:
+## Features
+- A glowing toggle button to activate the "awake" state.
+- Keeps your computer awake as long as the website is the active tab.
+
+## Running Locally
+
+To run the development server locally:
 
 ```bash
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploying to GitHub Pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project is built with [Next.js](https://nextjs.org/) and is configured to be deployed to GitHub Pages.
 
-## Learn More
+### 1. Update `next.config.ts` for Static Export
+To deploy a Next.js app to GitHub Pages, you must enable static HTML export. Ensure your `next.config.ts` includes `output: 'export'`:
 
-To learn more about Next.js, take a look at the following resources:
+```typescript
+import type { NextConfig } from "next";
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+const nextConfig: NextConfig = {
+  output: 'export',
+  // Optional: Change the base path if your project is not deployed to the root of the domain.
+  // basePath: '/your-repo-name', 
+};
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+export default nextConfig;
+```
 
-## Deploy on Vercel
+### 2. Set up GitHub Actions
+Create a `.github/workflows/deploy.yml` file in your repository to automatically build and deploy the site using GitHub Actions:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```yaml
+name: Deploy Next.js site to Pages
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# bossboss852.github.io
->>>>>>> 37994ffb20f7a7f41edd85926d6b9dd12bbf4410
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build with Next.js
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+### 3. Configure GitHub Repository Settings
+1. Go to your repository **Settings** on GitHub.
+2. Navigate to **Pages** on the left sidebar.
+3. Under **Build and deployment**, select **GitHub Actions** as the source.
+4. Push your code to the `main` branch, and the Action will automatically build and deploy your site to `bossboss852.github.io`.
+
+## License
+MIT
