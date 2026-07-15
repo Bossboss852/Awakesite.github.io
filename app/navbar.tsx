@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import AwakeButton from './AwakeButton'
 
 // ---------------------------------------------------------------------------
 // 1. DUMMY DATA & UTILS
@@ -29,24 +30,6 @@ interface AwakeButtonProps {
   onStateChange: (state: boolean) => void
 }
 
-const AwakeButton: React.FC<AwakeButtonProps> = ({ onStateChange }) => {
-  const [active, setActive] = useState(false)
-
-  const handleToggle = () => {
-    const newState = !active
-    setActive(newState)
-    onStateChange(newState)
-  }
-
-  return (
-    <button
-      onClick={handleToggle}
-      className="flex h-8 w-[180px] items-center justify-center font-bold tracking-wider text-white transition-all duration-300 focus:outline-none uppercase text-sm"
-    >
-      {active ? '🟢 Awake' : '🔴 Asleep'}
-    </button>
-  )
-}
 
 // ---------------------------------------------------------------------------
 // 3. MAIN NAVBAR COMPONENT

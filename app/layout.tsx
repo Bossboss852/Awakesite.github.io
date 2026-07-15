@@ -1,5 +1,8 @@
+'use client';
+import AwakeButton from './AwakeButton';
 import './globals.css'
 import Navbar from './navbar'
+import { useState } from 'react'
 
 export default function RootLayout({
   children,
