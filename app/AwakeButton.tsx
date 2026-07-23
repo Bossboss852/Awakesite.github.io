@@ -16,7 +16,7 @@ export default function AwakeButton({ onStateChange }: AwakeButtonProps ){
   //requests the lock from the browser, handles errors and rejections.
   async function requestLock(){
     if (!('wakeLock' in navigator)) {
-      alert("Your browser does not support the Screen Wake Lock API.");
+      alert( "Your browser does not support the Screen Wake Lock API." );
       return;
     }
 
